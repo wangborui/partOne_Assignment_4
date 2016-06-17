@@ -10,18 +10,33 @@ package partOne_Assignment_4;
  * @author Borui Wang
  */
 public class Board {
-    public Board(int[][] blocks)           // construct a board from an N-by-N array of blocks
-                                           // (where blocks[i][j] = block in row i, column j)
+    private final int N;
+    private static final int BLANK = 0;
+    private char [] tiles;
+    
+    public Board(int[][] blocks)           // construct a board from an N-by-N array of blocks (where blocks[i][j] = block in row i, column j)
     {
+        if(blocks == null) throw new java.lang.NullPointerException("no blocks in the board");
+        N = blocks.length;
         
+        //make Board class immutable
+        for(int i = 0; i < N * N; i++){
+            tiles[i]  = (char) blocks[i/N][i%N];
+        }
     }
     public int dimension()                 // board dimension N
     {
-        return -1;
+        return N;
     }
     public int hamming()                   // number of blocks out of place
     {
-        return -1;
+        int outOfPlace = 0;
+        for(int i = 0; i < N * N - 1; i++){
+          if(tiles[i] != i + 1){
+              outOfPlace++;
+          }
+        }
+        return outOfPlace;
     }
     public int manhattan()                 // sum of Manhattan distances between blocks and goal
     {
@@ -45,7 +60,15 @@ public class Board {
     }
     public String toString()               // string representation of this board (in the output format specified below)
     {
-        return null;
+        StringBuilder s = new StringBuilder();
+        s.append(N + "\n");
+        for (int i = 0; i < N; i++) {
+            for (int j = 0; j < N; j++) {
+                s.append(String.format("%2d ", (int)tiles[i * N + j]));
+            }
+            s.append("\n");
+        }
+        return s.toString();
     }
 
     public static void main(String[] args) // unit tests (not graded)
