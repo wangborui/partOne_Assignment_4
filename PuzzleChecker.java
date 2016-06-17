@@ -34,16 +34,16 @@ package partOne_Assignment_4;
 
 import edu.princeton.cs.algs4.In;
 import edu.princeton.cs.algs4.StdOut;
+import java.io.File;
 
 public class PuzzleChecker {
 
     public static void main(String[] args) {
 
         // for each command-line argument
-        for (String filename : args) {
-
+//        for (String filename : args) {
             // read in the board specified in the filename
-            In in = new In(filename);
+            In in = new In(new File("C:\\Users\\Borui Wang\\Desktop\\8puzzle-testing\\8puzzle\\puzzle2x2-00.txt"));
             int N = in.readInt();
             int[][] tiles = new int[N][N];
             for (int i = 0; i < N; i++) {
@@ -54,8 +54,14 @@ public class PuzzleChecker {
 
             // solve the slider puzzle
             Board initial = new Board(tiles);
-            Solver solver = new Solver(initial);
-            StdOut.println(filename + ": " + solver.moves());
-        }
+            StdOut.println("Dimension is: " + initial.dimension());
+            StdOut.println(initial);
+            StdOut.println("Hamming: " + initial.hamming());
+            StdOut.println("isGoal(): " + initial.isGoal());
+            StdOut.println("twin(): " + initial.twin());
+             
+ //           Solver solver = new Solver(initial);
+ //           StdOut.println(filename + ": " + solver.moves());
+        //}
     }
 }
