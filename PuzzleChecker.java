@@ -31,7 +31,6 @@ package partOne_Assignment_4;
  *  puzzle45.txt: 45
  *
  ******************************************************************************/
-
 import edu.princeton.cs.algs4.In;
 import edu.princeton.cs.algs4.StdOut;
 import java.io.File;
@@ -40,10 +39,12 @@ public class PuzzleChecker {
 
     public static void main(String[] args) {
 
+
         // for each command-line argument
 //        for (String filename : args) {
             // read in the board specified in the filename
-            In in = new In(new File("C:\\Users\\Borui Wang\\Desktop\\8puzzle-testing\\8puzzle\\puzzle2x2-00.txt"));
+    		//C:\Users\boruiwang\Desktop\Borui Wang\Interviews\Coursera\8puzzle-testing\8puzzle
+            In in = new In(new File("C:\\Users\\Borui Wang\\Desktop\\8puzzle-testing\\8puzzle\\puzzle2x2-04.txt"));
             int N = in.readInt();
             int[][] tiles = new int[N][N];
             for (int i = 0; i < N; i++) {
@@ -54,13 +55,20 @@ public class PuzzleChecker {
 
             // solve the slider puzzle
             Board initial = new Board(tiles);
-            StdOut.println("Dimension is: " + initial.dimension());
-            StdOut.println(initial);
-            StdOut.println("Hamming: " + initial.hamming());
-            StdOut.println("isGoal(): " + initial.isGoal());
-            StdOut.println("twin(): " + initial.twin());
-             
- //           Solver solver = new Solver(initial);
+//            int[][] a = {{1,2},{3,0}};
+//            Board repeat = new Board(a);
+  //          StdOut.println("Dimension is: " + initial.dimension());
+ //           StdOut.println(initial);
+//            StdOut.println("Hamming: " + initial.hamming());
+//            StdOut.println("isGoal(): " + initial.isGoal());
+//            StdOut.println("twin(): " + initial.twin());
+//            StdOut.println("equal(): " + initial.equals(initial));
+//            StdOut.println("neighbors(): " + initial.neighbors());
+             // StdOut.println("manhattan(): " + initial.manhattan());
+           Solver solver = new Solver(initial);
+           for(Board b: solver.solution()){
+        	   StdOut.println(b);
+           }
  //           StdOut.println(filename + ": " + solver.moves());
         //}
     }

@@ -5,6 +5,8 @@
  */
 package partOne_Assignment_4;
 
+import edu.princeton.cs.algs4.Queue;
+import edu.princeton.cs.algs4.StdOut;
 import edu.princeton.cs.algs4.StdRandom;
 
 /**
@@ -13,8 +15,8 @@ import edu.princeton.cs.algs4.StdRandom;
  */
 public class Board {
     private final int N;
-    private int moves;
     private static final int BLANK = 0;
+    private int blankIndex;
     private char [] tiles;
     
     public Board(int[][] blocks)           // construct a board from an N-by-N array of blocks (where blocks[i][j] = block in row i, column j)
@@ -22,11 +24,11 @@ public class Board {
         if(blocks == null) throw new java.lang.NullPointerException("no blocks in the board");
         this.N = blocks.length;
         this.tiles = new char[N*N];
-        this.moves = 0;
-        
         //make Board class immutable
         for(int i = 0; i < N * N; i++){
-            tiles[i]  = (char) blocks[i/N][i%N];
+        	if(blocks[i/N][i%N] == BLANK)
+        		this.blankIndex = i;
+            this.tiles[i]  = (char) blocks[i/N][i%N];
         }
     }
     public int dimension()                 // board dimension N
@@ -45,7 +47,16 @@ public class Board {
     }
     public int manhattan()                 // sum of Manhattan distances between blocks and goal
     {
-        return -1;
+    	int distance = 0;
+		for(int i = 0; i < N * N ; i++){
+	         if(tiles[i] == BLANK || tiles[i] == i+1 )
+	        	 continue;
+	         else{
+	        	 int indexDif = Math.abs(i - (tiles[i]-1));
+	        	 distance += (indexDif/N + indexDif%N); 
+	         }
+	    }
+        return distance;
     }
     public boolean isGoal()                // is this board the goal board?
     {
@@ -75,21 +86,98 @@ public class Board {
                      tempTiles[i][j] = tiles[i * N + j];
             }
         }
-        Board twin = new Board(tempTiles);
-        return twin;
+        return new Board(tempTiles);
     }
     public boolean equals(Object y)        // does this board equal y?
     {
+    	if(y == null)
+    		return false;
+    	if(y == this)
+    		return true;
+    	if(y.getClass() != this.getClass())
+    		return false;
+    	
         Board that = (Board)y;
-        if(this.dimension() != that.dimension())
-            return false;
-        //to do?
-        boolean isEqual = false;
-        return isEqual;
+        for(int i = 0; i < N*N; i ++){
+        	if(this.tiles[i] != that.tiles[i])
+        		return false;
+        }
+        return true;
     }
     public Iterable<Board> neighbors()     // all neighboring boards
     {
-        return null;
+    	Queue<Board> queue = new Queue<Board>();
+    	
+    	int left = blankIndex - 1;
+		   // make sure left and blank on same row and in bound
+			if ((left >= 0 && left < N * N) && (left / N == blankIndex / N)) {
+				int[][] tempTiles = new int[dimension()][dimension()];
+				for (int i = 0; i < dimension(); i++) {
+					for (int j = 0; j < dimension(); j++) {
+						int index = i * N + j;
+						if (index == left)
+							tempTiles[i][j] = tiles[blankIndex];
+						else if (index == blankIndex)
+							tempTiles[i][j] = tiles[left];
+						else
+							tempTiles[i][j] = tiles[i * N + j];
+					}
+				}
+				queue.enqueue(new Board(tempTiles));
+			}
+    	
+    	int right = blankIndex + 1;
+    	 // make sure right and blank on same row and in bound
+    	if((right >= 0 && right < N * N) && (right / N == blankIndex / N)){
+    		int[][] tempTiles = new int[dimension()][dimension()];
+            for(int i = 0; i < dimension(); i++){
+                for(int j= 0; j < dimension(); j++){
+                    int index = i * N + j;
+                    if(index == right)
+                        tempTiles[i][j] = tiles[blankIndex];
+                    else if(index == blankIndex)
+                         tempTiles[i][j] = tiles[right];
+                    else
+                         tempTiles[i][j] = tiles[i * N + j];
+                }
+            }
+            queue.enqueue(new Board(tempTiles));
+    	}
+    	int top = blankIndex - N;
+    	if(top >= 0 && top < N * N){
+    		int[][] tempTiles = new int[dimension()][dimension()];
+            for(int i = 0; i < dimension(); i++){
+                for(int j= 0; j < dimension(); j++){
+                    int index = i * N + j;
+                    if(index == top)
+                        tempTiles[i][j] = tiles[blankIndex];
+                    else if(index == blankIndex)
+                         tempTiles[i][j] = tiles[top];
+                    else
+                         tempTiles[i][j] = tiles[i * N + j];
+                }
+            }
+            queue.enqueue(new Board(tempTiles));
+    	}
+    	
+    	int bottom = blankIndex + N;
+    	if(bottom >= 0 && bottom < N * N){
+    		int[][] tempTiles = new int[dimension()][dimension()];
+            for(int i = 0; i < dimension(); i++){
+                for(int j= 0; j < dimension(); j++){
+                    int index = i * N + j;
+                    if(index == bottom)
+                        tempTiles[i][j] = tiles[blankIndex];
+                    else if(index == blankIndex)
+                         tempTiles[i][j] = tiles[bottom];
+                    else
+                         tempTiles[i][j] = tiles[i * N + j];
+                }
+            }
+            queue.enqueue(new Board(tempTiles));
+    	}
+    	
+        return queue;
     }
     public String toString()               // string representation of this board (in the output format specified below)
     {
