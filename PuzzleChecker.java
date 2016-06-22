@@ -3,7 +3,7 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package partOne_Assignment_4;
+//package partOne_Assignment_4;
 
 /******************************************************************************
  *  Compilation:  javac PuzzleChecker.java
@@ -44,7 +44,7 @@ public class PuzzleChecker {
 //        for (String filename : args) {
             // read in the board specified in the filename
     		//C:\Users\boruiwang\Desktop\Borui Wang\Interviews\Coursera\8puzzle-testing\8puzzle
-            In in = new In(new File("C:\\Users\\Borui Wang\\Desktop\\8puzzle-testing\\8puzzle\\puzzle2x2-04.txt"));
+            In in = new In(new File("C:\\Users\\Borui Wang\\Desktop\\8puzzle-testing\\8puzzle\\puzzle4x4-unsolvable.txt"));
             int N = in.readInt();
             int[][] tiles = new int[N][N];
             for (int i = 0; i < N; i++) {
@@ -58,7 +58,7 @@ public class PuzzleChecker {
 //            int[][] a = {{1,2},{3,0}};
 //            Board repeat = new Board(a);
   //          StdOut.println("Dimension is: " + initial.dimension());
- //           StdOut.println(initial);
+//            StdOut.println(initial);
 //            StdOut.println("Hamming: " + initial.hamming());
 //            StdOut.println("isGoal(): " + initial.isGoal());
 //            StdOut.println("twin(): " + initial.twin());
@@ -66,9 +66,10 @@ public class PuzzleChecker {
 //            StdOut.println("neighbors(): " + initial.neighbors());
              // StdOut.println("manhattan(): " + initial.manhattan());
            Solver solver = new Solver(initial);
-           for(Board b: solver.solution()){
-        	   StdOut.println(b);
-           }
+//           for(Board b: solver.solution()){
+//        	   StdOut.println(b);
+//           }
+           StdOut.println(solver.isSolvable());
  //           StdOut.println(filename + ": " + solver.moves());
         //}
     }
