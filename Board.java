@@ -58,8 +58,10 @@ public class Board {
             if (tiles[i] == BLANK || tiles[i] == i + 1) {
                 continue;
             } else {
-                int indexDif = Math.abs(i - (tiles[i] - 1));
-                distance += (indexDif / N + indexDif % N);
+                int expectedIndex = tiles[i] - 1;
+                int rowDif = Math.abs(i / N - expectedIndex / N);
+                int colDif = Math.abs(i % N - expectedIndex % N);
+                distance += rowDif + colDif;
             }
         }
         return distance;
@@ -98,6 +100,7 @@ public class Board {
         return new Board(tempTiles);
     }
 
+    @Override
     public boolean equals(Object y) // does this board equal y?
     {
         if (y == null) {
@@ -111,6 +114,9 @@ public class Board {
         }
 
         Board that = (Board) y;
+        if(this.dimension() != that.dimension())
+            return false;
+        
         for (int i = 0; i < N * N; i++) {
             if (this.tiles[i] != that.tiles[i]) {
                 return false;

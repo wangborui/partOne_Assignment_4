@@ -44,7 +44,7 @@ public class PuzzleChecker {
 //        for (String filename : args) {
             // read in the board specified in the filename
     		//C:\Users\boruiwang\Desktop\Borui Wang\Interviews\Coursera\8puzzle-testing\8puzzle
-            In in = new In(new File("C:\\Users\\Borui Wang\\Desktop\\8puzzle-testing\\8puzzle\\puzzle4x4-unsolvable.txt"));
+            In in = new In(new File("C:\\Users\\Borui Wang\\Desktop\\8puzzle-testing\\8puzzle\\puzzle2x2-03.txt"));
             int N = in.readInt();
             int[][] tiles = new int[N][N];
             for (int i = 0; i < N; i++) {
@@ -66,11 +66,9 @@ public class PuzzleChecker {
 //            StdOut.println("neighbors(): " + initial.neighbors());
              // StdOut.println("manhattan(): " + initial.manhattan());
            Solver solver = new Solver(initial);
-//           for(Board b: solver.solution()){
-//        	   StdOut.println(b);
-//           }
-           StdOut.println(solver.isSolvable());
- //           StdOut.println(filename + ": " + solver.moves());
-        //}
+           StdOut.println(solver.solution());
+          StdOut.println(solver.isSolvable());
+        StdOut.println("moves: " + solver.moves());
+         //}
     }
 }

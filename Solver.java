@@ -16,6 +16,8 @@ public class Solver {
 
     private SearchNode goal;
     private final Board initial;
+    private final Stack<Board> solution;
+    private boolean isSolvable;
 
     private class SearchNode implements Comparable {
 
@@ -40,6 +42,7 @@ public class Solver {
             return curPri.compareTo(that.priority);
         }
 
+        @Override
         public String toString() {
             String result = "moves: " + this.moves
                     + "\n" + "Hamming(): " + this.manhattan
@@ -56,6 +59,9 @@ public class Solver {
         }
         //make Solver immutable by copying initial board
         this.initial = initial;
+        this.solution = new Stack<Board>();
+        this.isSolvable = false;
+
         //start best-first search
         SearchNode initialSN = new SearchNode(initial, 0, null);
         SearchNode initialTwin = new SearchNode(initial.twin(), 0, null);
@@ -66,9 +72,19 @@ public class Solver {
         //delete from the priority queue with min priority search node
         while (!minPQ.isEmpty()) {
             SearchNode minP = minPQ.delMin();
-            //StdOut.println(minP);
+            //if a goal is found
             if (minP.board.isGoal()) {
                 this.goal = minP;
+
+                //populate iterable for solutions
+                SearchNode walker = goal;
+                while (walker != null) {
+                    this.solution.push(walker.board);
+                    walker = walker.prev;
+                }
+                if (this.solution.iterator().next().equals(this.initial)) {
+                    this.isSolvable = true;
+                }
                 break;
             }
 
@@ -85,12 +101,7 @@ public class Solver {
 
     public boolean isSolvable() // is the initial board solvable?
     {
-        Board root = solution().iterator().next();
-        if (root.equals(initial)) {
-            return true;
-        } else {
-            return false;
-        }
+        return isSolvable;
     }
 
     public int moves() // min number of moves to solve initial board; -1 if unsolvable
@@ -98,19 +109,19 @@ public class Solver {
         int moves = 0;
         if (!isSolvable()) {
             moves = -1;
+        } else {
+            moves = goal.moves;
         }
-        moves = goal.moves;
         return moves;
     }
 
     public Iterable<Board> solution() // sequence of boards in a shortest solution; null if unsolvable
     {
-        Stack<Board> solution = new Stack<Board>();
-        while (goal != null) {
-            solution.push(goal.board);
-            goal = goal.prev;
+        if (isSolvable()) {
+            return solution;
+        } else {
+            return null;
         }
-        return solution;
     }
 
     public static void main(String[] args) // solve a slider puzzle (given below)
