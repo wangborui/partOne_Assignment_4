@@ -19,7 +19,7 @@ public class Solver {
     private final Stack<Board> solution;
     private boolean isSolvable;
 
-    private class SearchNode implements Comparable {
+    private class SearchNode implements Comparable<SearchNode> {
 
         private Board board;
         private int moves;
@@ -36,10 +36,10 @@ public class Solver {
         }
 
         @Override
-        public int compareTo(Object o) {
-            SearchNode that = (SearchNode) o;
-            Integer curPri = this.priority;
-            return curPri.compareTo(that.priority);
+        public int compareTo(SearchNode that) {
+            Integer thisPri = this.priority;
+	    Integer thatPri = that.priority;
+	    return thisPri.compareTo(thatPri);
         }
 
         @Override
